@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Portfolio</title>
+
+    <style>
+      * {
+    box-sizing: border-box; /* Ensure padding and borders are included in the element's total width and height */
+}
+        /* Logo styling */
+    .logo {
+      font-size: 24px;
+      color: #fa3d3b;
+      font-weight: bold;
+      position: fixed;
+      top: 20px;
+      left: 30px; /* Default position for desktop */
+      z-index: 1001;
+      transition: opacity 0.3s ease;
+      opacity: 1; /* Show by default */
+    }
+    @media (max-width: 768px) {
+    .logo {
+        top: 10px; /* Adjust the top position for mobile */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Center alignment */
+    }
+}
+
+    /* Hide logo when navbar is shrunk */
+    .navbar.shrink + .logo {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Full navbar styling */
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #1a1a2e;
+      box-shadow: 0 0 5px #2a2a4e;
+      padding: 5px;
+      width: 80%;
+      max-width: 400px;
+      position: fixed;
+      top: 20px; /* Default position for desktop */
+      left: 50%;
+      transform: translateX(-50%);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      border-radius: 15px;
+    }
+
+    /* Navbar icons and labels */
+    .navbar a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color:#937af6;
+      font-size: 10px;
+      flex-grow: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .navbar a i {
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+
+    /* Shrunk line style */
+    .navbar.shrink {
+      justify-content: center;
+      width: 80px;
+      height: 5px;
+      padding: 0;
+      border-radius: 5px;
+      background-color: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Hide icons and labels when shrunk */
+    .navbar.shrink a {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Show only home icon in shrunk state */
+    .navbar.shrink a.active {
+      opacity: 1;
+      visibility: visible;
+      color: white;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .navbar {
+        bottom: 20px; /* Move navbar to the bottom on mobile */
+        top: auto;
+      }
+
+      .logo {
+    top: 10px; /* Position it near the top */
+    left: 33%; /* Align horizontally to the center */
+    transform: translateX(-50%); /* Center it */
+    position: fixed;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3); /* Optional background for better visibility */
+    padding: 5px 10px; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+    backdrop-filter: blur(5px); /* Optional blurred background */
+  }
+
+
+      .navbar a i {
+        font-size: 18px;
+      }
+
+      .navbar a {
+        font-size: 9px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 3px;
+      }
+
+      .navbar a i {
+        font-size: 16px;
+      }
+
+      .navbar a {
+        font-size: 8px;
+      }
+    }
+    #skills {
+    padding: 2rem;
+    background-color: #1c1c1c; /* Dark background for contrast */
+    color: #ffffff; /* Text color */
+    text-align: center; /* Center-align text */
+    width: 100%;
+    height: auto; /* Changed to auto to adjust based on content */
+    margin-bottom: 2rem; /* Space below the skills section */
+}
+
+/* Adjustments for the projects section */
+#project {
+    margin-top: 2rem; /* Space above the projects section */
+    width: 100%;
+    height: auto; /* Allowing height to adjust based on content */
+    text-align: center;
+    text-decoration: none;
+    background-color: #262626; /* Added background color for consistency */
+    color: #fffbf5; /* Text color for visibility */
+}
+
+/* Responsive adjustments for tablets */
+@media (max-width: 768px) {
+    .skills-container {
+        grid-template-columns: repeat(2, 1fr); /* Two boxes per row on smaller screens */
+    }
+}
+
+/* Responsive adjustments for mobile (425px and below) */
+@media (max-width: 425px) {
+    .skills-container {
+        grid-template-columns: 1fr; /* One box per row on very small screens */
+    }
+    
+    #skills {
+        margin-bottom: 2rem; /* Additional space to avoid overlap */
+    }
+
+    #project {
+        margin-top: 2rem; /* Ensure there's space above */
+    }
+}
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+    position: relative;
+    margin: auto;
+    padding: 0;
+    max-width: 90%; /* Limit width for larger screens */
+    max-height: 90%; /* Limit height */
+}
+
+/* Responsive image */
+.modal-image {
+    width: 100%; /* Full width of modal content */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Make sure it behaves like a block element */
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb; /* Lighten on hover */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95%; /* Smaller max width for tablets */
+    }
+}
+
+@media (max-width: 425px) {
+    .modal-content {
+        max-width: 100%; /* Full width for mobile devices */
+    }
+}
+.contact-form {
+      padding-top: 5rem;
+      position: relative;
+      min-height: 45vh;
+      background: #fd4556;
+      z-index: 0;
+      padding: 30px;
+      justify-content: center;
+      display: grid;
+      grid-template-rows: 1fr auto 1fr;
+      align-items: center;
+    }
+    .container-contact {
+      padding-bottom: 5rem;
+    }
+    .contact-form h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-top: 5rem;
+      margin-bottom: 3rem;
+      font-weight: 400;
+      color: #fff;
+    }
+    .contact-form h2 {
+      line-height: 40px;
+      margin-bottom: 5px;
+      font-size: 30px;
+      font-weight: 500;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .contact-us {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    position: relative;
+    width: 100%; /* Adjust width as needed */
+    max-width: 900px; /* Optional: set a max width for larger screens */
+    margin: 0 auto; /* Center the section horizontally */
+    padding: 40px 20px; /* Add padding */
+    border-radius: 15px; /* Optional: rounded corners */
+}
+
+    .contact-us .title h1 {
+      color: #937af6;
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .contact-us .box {
+      display: grid;
+      grid-template-columns: 1fr; /* Make it 1 column for smaller screens */
+      grid-template-rows: auto; /* Auto adjust height */
+      grid-gap: 20px;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    /* Add border-radius to the contact form, info, and map sections */
+.contact .form,
+.contact .info,
+.contact .map {
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 5px 35px rgba(0, 0, 0, 0.15);
+  border-radius: 15px; /* Add border-radius here */
+}
+
+
+   /* Grid Layout for Smaller Screens (Mobile) */
+@media (max-width: 767px) {
+  .contact-us .box {
+    grid-template-columns: 1fr; /* Make it 1 column for mobile screens */
+    grid-template-areas:
+      "form"
+      "info"
+      "map";
+  }
+
+  /* Adjust info and map sections to stack below the form */
+  .contact .info,
+  .contact .map {
+    margin-top: 20px; /* Add some spacing between sections */
+  }
+
+  /* Ensure the form input fields are full width */
+  .inputBox input,
+  .inputBox textarea {
+    width: 100%;
+  }
+
+  /* Stack name and email vertically on smaller screens */
+  .formBox .row50 {
+    display: flex;
+    flex-direction: column; /* Stack fields vertically */
+    gap: 10px; /* Adjust gap between fields */
+  }
+}
+/* Mobile View */
+@media (max-width: 767px) {
+  .btn {
+    justify-content: center; /* Center the button on mobile view */
+  }
+
+  .btn button {
+    width: 80%; /* Make the button take up 80% of the container width on mobile */
+  }
+}
+
+
+    /* Form Box styles */
+    .formBox .row50 {
+      display: flex;
+      gap: 20px;
+    }
+
+    .inputBox {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      width: 100%; /* Adjust for smaller screens */
+    }
+
+    @media (min-width: 768px) {
+      .inputBox {
+        width: 48%; /* Adjust width for larger screens */
+      }
+    }
+
+    /* Info Section */
+    .info {
+      background: #53212b;
+    }
+
+    .info:hover {
+      background: black;
+      color: white;
+      transition: all 0.5s ease;
+      transform: translateY(-10px);
+    }
+
+    .info h3 {
+      color: #fff;
+    }
+
+    .info .infoBox div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .info .infoBox div span {
+      min-width: 40px;
+      height: 40px;
+      color: #fff;
+      background: red;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .info .infoBox div p,
+    .info .infoBox div a {
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    /* Contact Map */
+    .map iframe {
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+    }
+
+    .contact-form .main {
+      position: relative;
+      display: flex;
+      border: 15px;
+      width: 1100px;
+      height: 450px;
+    }
+
+    .form-map {
+      margin-top: 37px;
+      flex-basis: 50%;
+      background: #f0f4f8;
+      background-size: fit;
+      align-content: center;
+      max-width: 100%; /* Set max-width to 100% */
+      max-height: 100%; /* Set max-height to 100% */
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      align-items: center;
+      display: grid;
+      border-radius: 15px;
+    }
+
+    .form-map iframe {
+      max-width: 100%;
+      max-height: 100%;
+      align-items: center;
+    }
+
+    .btn,
+    button,
+    input {
+      cursor: pointer;
+      border-radius: 35px;
+    }
+    .btn {
+  display: flex;
+  justify-content: flex-end; /* Position the button to the right on larger screens */
+  width: 100%;
+  margin-top: 10px; /* Add a small gap above the button */
+}
+    .btn button {
+  background:#937af6 ;
+  color: #b7b4bb;
+  color: white;
+  padding: 10px 20px; /* Add some padding to the button */
+  border-radius: 35px;
+  cursor: pointer;
+  border: none;
+  transition: 0.5s ease;
+}
+
+    
+    button:hover {
+      color: #ffffff;
+      background-color: black;
+      transform: translateY(-5px);
+      transition: 0.5s ease;
+    }
+
+    .contact-form form {
+      margin: 30px 0;
+    }
+
+    .contact-form input:focus {
+      background: transparent;
+      border: 1px solid #040673;
+    }
+
+    .contact-form input,
+    textarea {
+      outline: none;
+      margin-bottom: 15px;
+      font-stretch: 16px;
+      color: #999;
+      padding: 14px 20px;
+      width: 100%;
+      display: inline-block;
+      box-sizing: border-box;
+      border: none;
+      background: #fcfcfc;
+      transition: 0.3s ease;
+    }
+
+    .contact-me-form {
+      text-align: center;
+      color: white;
+    }
+
+    .container-contact {
+      padding: 50px 20px; /* Adjust as needed */
+      height: auto; /* Ensure it's flexible */
+      min-height: 50vh; /* This will push the footer further down */
+    }
+
+    
+
+    .contact-us .title h2 {
+      font-family: 'Siffon', sans-serif;
+      font-size: 3rem;
+      font-weight: 500;
+      color: #f4f4f4;
+    }
+
+    .form {
+      grid-area: form;
+    }
+
+    .info {
+      grid-area: info;
+    }
+
+    .map {
+      grid-area: map;
+    }
+
+    .contact {
+      padding: 40px;
+      background: #fff;
+      box-shadow: 0 5px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .box {
+      position: relative;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 5fr 4fr;
+      grid-template-areas:
+        "form info"
+        "form map";
+      grid-gap: 20px;
+      margin-top: 20px;
+    }
+
+    .contact h3 {
+      color: black;
+      font-weight: 500;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    /* FORM */
+    .formBox {
+      position: relative;
+      width: 100%;
+    }
+    .formBox .row50 {
+  display: flex;
+  gap: 30px; /* Add gap between the Name and Email fields */
+}
+
+.inputBox {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px; /* Maintain bottom margin for each input box */
+  border-radius: 15px;
+  width: 100%;
+}
+
+.inputBox input,
+.inputBox textarea {
+  outline: none;
+  color: #999;
+  font-size: 16px;  
+  border: none;
+  background: #eee;
+  padding: 20px;
+  transition: 0.3s ease;
+  resize: none;
+}
+
+/* Add margin-bottom to separate the fields */
+.row50 .inputBox:first-child {
+  margin-right: 30px; /* Space between Name and Email */
+}
+
+
+    .inputBox input:focus,
+    .inputBox textarea:focus {
+      background: transparent;
+      border: 1px solid #040673;
+    }
+
+    .inputBox input,
+    .inputBox textarea {
+      width: 100%;
+    }
+
+    /* Contact Info Section */
+    
+    .infoBox {
+      display: flex;
+      flex-direction: column;
+      
+    }
+
+    .infoBox div {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .infoBox div i {
+      color: #fa3d3b;
+      font-size: 30px;
+    }
+
+    .infoBox div p {
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    /* Layout for the two-column structure(ABOUT SECTION) */
+    .about-me{
+      
+      height: 10vh;
+    }
+    .two-column-layout {
+      display: flex;
+      flex-direction: column; /* Stack columns vertically by default */
+      
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .left-column{
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      background-color: #1a1a2e;
+      height:40vh;
+    }
+
+    .left-column,
+    .right-column {
+      width: 100%; /* Full width by default for mobile */
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    /* Sidenav styles */
+    .sidenav {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      padding-top: 20px;
+      
+    }
+
+    .sidenav li {
+      margin-bottom: 10px;
+    }
+
+    .sidenav a {
+      text-decoration: none;
+      font-family: sans-serif;
+      color: #937af6;
+      padding: 12px 16px;
+      display: block;
+      border-radius: 4px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .sidenav a:hover {
+      background-color: black;
+      color: #937af6;
+      transition: .5s ease-in-out;
+    }
+
+    /* Content Section Styles */
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    #about-content,
+    #education-content,
+    #experience-content,
+    #skill-content {
+      background-color: #1a1a2e;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    #skill-content h1 {
+      color: #937af6;
+      padding-bottom: 2rem;
+    }
+    .skills-box{
+      color: white;
+    }
+    #tools{
+      font-size: 20px;
+    }
+    #home {
+    padding: 60px 0; /* Add padding to the top and bottom */
+    
+    clear: both; /* Ensure that floated elements are cleared */
+}
+
+.about-me {
+    margin-top: 20px; /* Space above the about-me section */
+    margin-bottom: 40%;
+}
+
+#skills {
+    margin-top: 20px; /* Space above the skills section */
+}
+
+    /* Base styles for About Section */
+    #about-content {
+      background-color: #1a1a2e;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 900px; /* Max width for larger screens */
+      margin: 0 auto;
+    }
+
+    /* Title styling for About Me */
+    .about-content h1 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    /* Introductory paragraph styling */
+    .intro {
+      font-size: 1rem;
+      color: #cccccc;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* Styling for details section */
+    .details {
+      display: flex;
+      flex-direction: column; /* Stack rows vertically */
+      gap: 15px;
+    }
+
+    /* Row for each detail item */
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #444;
+    }
+
+    /* Styling for the label in each row */
+    .label {
+      font-weight: bold;
+      color: #cccccc;
+      flex: 1;
+    }
+
+    /* Styling for the value in each row */
+    .value {
+      color: #ffffff;
+      text-align: right;
+      flex: 2;
+    }
+
+    /* Remove the bottom border from the last row */
+    .row:last-child {
+      border-bottom: none;
+    }
+
+    /* Media Query for larger screens (Tablet/Desktop) */
+    @media (min-width: 768px) {
+      /* Adjust title and intro font size on larger screens */
+      #about-content h1 {
+        font-size: 2rem;
+      }
+
+      .intro {
+        font-size: 1.1rem;
+      }
+
+      /* Use a 2-column layout for details on larger screens */
+      .details {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+
+      .row {
+        width: 45%; /* 2 items per row */
+        padding: 10px 0;
+      }
+
+      .label {
+        font-size: 1rem;
+      }
+
+      .value {
+        font-size: 1rem;
+        text-align: left;
+      }
+    }
+
+    /* Adjusted font sizes for better readability on mobile */
+    h1, h2 {
+      font-size: 1.6rem;
+    }
+
+    .intro, .details, .education-card p {
+      font-size: 1rem;
+    }
+
+    .details .row {
+      font-size: 0.9rem;
+    }
+
+    .education-card h3 {
+      font-size: 1.1rem;
+      color: #937af6;
+    }
+    .education-card h1 {
+      color: #7f5af0;
+    } 
+    .education-card p{
+      color: white;
+    }
+
+   /* Education content styles */
+.education-grid {
+  display: grid; /* Use grid for layout */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+  gap: 20px; /* Space between cards */
+}
+
+/* Education card styles */
+.education-card {
+  background-color: #262626; /* Background color of the skill box */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.education-card:hover {
+  transform: translateY(-5px);
+  transition: 0.5s ease-in-out;
+}
+
+/* Responsive adjustments for education cards on smaller screens */
+@media (max-width: 768px) {
+  .education-grid {
+    grid-template-columns: 1fr; /* Stack cards in a single column */
+  }
+}
+    .skills-section {
+      display: none;
+    }
+
+    .skills-section.active {
+      display: block;
+    }
+
+    .skills-layout {
+      display: flex;
+      flex-direction: column; /* Stack skill sections vertically */
+    }
+
+    /* Updated skillnav for two-column layout */
+    .skillnav {
+      display: grid;  /* Change from flex to grid */
+      grid-template-columns: repeat(2, 1fr);  /* Create two columns of equal width */
+      gap: 15px;  /* Add some space between items */
+      margin-bottom: 20px;
+    }
+
+    .nav-item {
+      background-color: #2c2d3f;
+      color: #ffffff;
+      padding: 12px 0;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item.active,
+    .nav-item:hover {
+      background-color: #6a5acd;
+      transform: translateY(-5px);
+    }
+
+    .skills-box {
+      flex: 1;
+      width: 60%;
+      padding: 15px;
+      margin-left: 2rem;
+      background-color: #1a1a40;
+      border-radius: 20px;
+    }
+
+    .skill-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #2c2d3f;
+      border-radius: 5px;
+      height: 8px;
+      margin-right: 15px;
+    }
+
+    .progress {
+      background: linear-gradient(90deg, #7f5af0, #9b59b6);
+      height: 100%;
+      border-radius: 5px;
+    }
+
+    .percentage {
+      color: #ffffff;
+      font-size: 20px ;
+    }
+    .skill-name{
+      font-size: 20px;
+    }
+
+    .card {
+      background-color: #2a2a4e;
+      padding: 20px;
+      border-radius: 15px;
+      width: 45%;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card h2 {
+      color: #ff5555;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #dddddd;
+      margin-bottom: 5px;
+    }
+
+    .card span {
+      display: block;
+      font-size: 14px;
+      color: #aaaaaa;
+    }
+
+    /* Scrollbar customization */
+    .left-column::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .left-column::-webkit-scrollbar-thumb {
+      background-color: #ff5555;
+      border-radius: 10px;
+    }
+    @media (max-width: 768px) {
+    .two-column-layout {
+        flex-direction: column; /* Stack columns vertically on smaller screens */
+    }
+
+    .left-column,
+    .right-column {
+        width: 100%; /* Full width on smaller screens */
+    }
+}
+
+    /* Media Queries for larger devices */
+    @media (min-width: 768px) {
+      .two-column-layout {
+        flex-direction: row;
+      }
+
+      .left-column {
+        width: 25%;
+      }
+
+      .right-column {
+        width: 75%;
+        margin-left: 20px;
+      }
+
+      .skills-layout {
+        flex-direction: row; /* Side-by-side layout for skills on larger screens */
+      }
+
+      .nav-item {
+        font-size: 16px;
+        padding: 12px;
+      }
+
+      .education-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Multi-column layout for education */
+      }
+
+      .card {
+        width: 45%; /* Reduce width for larger screens */
+      }
+      
+    }
+    .frontend-skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Center the items */
+    margin-top: 20px; /* Space above the skills section */
+}
+
+
+.skill-item {
+    text-align: center; /* Center the text under each image */
+    margin: 15px; /* Space between each skill item */
+}
+
+.skill-image {
+    width: 80px; /* Adjust the width of the images */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space between image and text */
+}
+/* Main content area */
+main {
+    flex: 1; /* This pushes the footer to the bottom */
+}
+
+/* Footer Styling */
+.footer {
+    text-align: center;
+    padding: 20px;
+    height: 30vh; /* Footer takes up 30% of viewport height */
+    width: 100%;
+    background-color: #262626;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #937af6 ;
+    margin-bottom: 20px;
+}
+
+.footer h2 .dot {
+    color: #937af6;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    color: #000;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.social-icons a {
+    color: #555;
+    font-size: 1.6rem;
+    color: #937af6 ;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+    transform: translateY(-5px);
+    color: #0073e6;
+}
+
+footer p {
+    margin-top: 20px;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .footer h2 {
+        font-size: 2rem;
+    }
+    footer{
+      width: 100%;
+
+    }
+    .footer-nav {
+        gap: 20px;
+    }
+    .social-icons {
+        gap: 20px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 10px;
+        width: 100%;
+        height: auto; /* Adjust height for small screens */
+    }
+    .main-container{
+      width: 500px;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+    }
+    html{
+      
+      overflow-x: hidden;
+      justify-content: center;
+      align-items: center;
+    }
+    .footer h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    .footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .social-icons {
+        flex-direction: row;
+        gap: 15px;
+        margin: 10px 0;
+    }
+    footer p {
+        font-size: 0.8rem;
+    }
+}
+@media (max-width: 375px) {
+  footer{
+    width: 100%;
+    
+  }
+  html{
+    width: 100%;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0 auto;
+  }
+  .skill-name{
+    font-size: 10px;
+  }
+  .skills-box{
+    width: 150px;
+  }
+  .progress-bar{
+    width: 50%;
+    height: 10px;
+  }
+  .skill-bar span{
+    font-size: 10px;
+  }
+  .skills-box .skill-bar{
+    width: 100px;
+  }
+}
+.nav-icon {
+    width: 30px; /* Set the width of the icons */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 5px; /* Space between icon and text */
+    vertical-align: middle; /* Align icon with text */
+}
+.project-link {
+    display: flex; /* Use flexbox to center the icon */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 40px; /* Set width */
+    height: 40px; /* Set height equal to width for a circle */
+    border-radius: 50%; /* Make it circular */
+    background-color: #937af6; /* Background color */
+    color: white; /* Icon color */
+    position: absolute; /* Position it absolutely */
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.project-link:hover {
+    transform: scale(5px); /* Change background on hover */
+}
+* {
+    box-sizing: border-box; /* Ensure padding and borders are included in the element's total width and height */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    background-color: #1a1a2e;
+    font-family: 'Poppins', sans-serif; /* Ensure consistent font */
+}
+
+/* Logo styling */
+.logo {
+    font-size: 24px;
+    color: #fa3d3b;
+    font-weight: bold;
+    position: fixed;
+    top: 20px;
+    left: 30px; /* Default position for desktop */
+    z-index: 1001;
+    transition: opacity 0.3s ease;
+    opacity: 1; /* Show by default */
+}
+
+@media (max-width: 768px) {
+    .logo {
+        top: 10px; /* Adjust the top position for mobile */
+        left: 40%; /* Center horizontally */
+        transform: translateX(-50%); /* Center alignment */
+    }
+}
+@media (max-width:480px) {
+  .logo{
+    left:38%;
+  }
+}
+@media (max-width: 330) {
+  .logo{
+    left:18%;
+  }
+}
+/* Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1a1a2e;
+    box-shadow: 0 0 5px #2a2a4e;
+    padding: 5px;
+    width: 80%;
+    max-width: 400px;
+    position: fixed;
+    top: 20px; /* Default position for desktop */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border-radius: 15px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .navbar {
+        bottom: 20px; /* Move navbar to the bottom on mobile */
+        top: auto; /* Reset top position */
+        width: 100%; /* Full width on mobile */
+        border-radius: 0; /* Remove border radius for full width */
+    }
+}
+
+/* Navbar icons and labels */
+.navbar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #937af6;
+    font-size: 10px;
+    flex-grow: 1;
+    transition: opacity 0.3s ease;
+}
+
+.navbar a i {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+/* Skills Section */
+#skills {
+    padding: 2rem;
+    background-color: #1c1c1c; /* Dark background for contrast */
+    color: #ffffff; /* Text color */
+    text-align: center; /* Center-align text */
+    width: 100%;
+    height: auto; /* Changed to auto to adjust based on content */
+    margin-bottom: 2rem; /* Space below the skills section */
+}
+
+/* Project Section */
+#project {
+    margin-top: 2rem; /* Space above the projects section */
+    width: 100%;
+    height: auto; /* Allowing height to adjust based on content */
+    text-align: center;
+    text-decoration: none;
+    background-color: #262626; /* Added background color for consistency */
+    color: #fffbf5; /* Text color for visibility */
+}
+
+/* Responsive adjustments for projects */
+.projects-box {
+    display: grid; /* Use grid for better responsiveness */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Space between cards */
+    padding: 0 20px; /* Padding for smaller screens */
+}
+
+/* Contact Section */
+.contact-us {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    position
+    : relative;
+    width: 100%; /* Full width */
+    max-width: 900px; /* Optional: set a max width for larger screens */
+    margin: 0 auto; /* Center the section horizontally */
+    padding: 40px 20px; /* Add padding */
+    border-radius: 15px; /* Optional: rounded corners */
+}
+
+/* Responsive adjustments for contact section */
+@media (max-width: 768px) {
+    .contact-us .box {
+        grid-template-columns: 1fr; /* Make it 1 column for mobile screens */
+        grid-template-areas:
+            "form"
+            "info"
+            "map";
+    }
+
+    .contact .info,
+    .contact .map {
+        margin-top: 20px; /* Add some spacing between sections */
+    }
+
+    .inputBox input,
+    .inputBox textarea {
+        width: 100%; /* Ensure full width for input fields */
+    }
+
+    .formBox .row50 {
+        display: flex;
+        flex-direction: column; /* Stack fields vertically */
+        gap: 10px; /* Adjust gap between fields */
+    }
+}
+
+/* Specific adjustments for very small screens (329px and below) */
+@media (max-width: 329px) {
+    .contact-us {
+        padding: 20px 10px; /* Reduce padding for small screens */
+        max-width: 100%; /* Allow full width */
+    }
+
+    .contact-us .title h1 {
+        font-size: 24px; /* Smaller title font size */
+        margin-bottom: 10px; /* Reduced margin */
+    }
+
+    .contact-us .box {
+        width: 100%; /* Full width for the box */
+    }
+
+    .inputBox input,
+    .inputBox textarea {
+        font-size: 14px; /* Smaller font size for inputs */
+        padding: 10px; /* Adjust padding for inputs */
+    }
+
+    .btn button {
+        width: 100%; /* Full width for buttons */
+        padding: 10px; /* Adjust padding for buttons */
+        font-size: 14px; /* Smaller font size for buttons */
+    }
+
+    .infoBox div {
+        font-size: 12px; /* Smaller font size for info */
+    }
+
+    .infoBox div i {
+        font-size: 20px; /* Smaller icon size */
+    }
+}
+
+/* Footer Section */
+.footer {
+    text-align: center;
+    padding: 20px;
+    height: auto; /* Allow height to adjust based on content */
+    width: 100%;
+    background-color: #262626;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive adjustments for footer */
+@media (max-width: 768px) {
+    .footer h2 {
+        font-size: 2rem; /* Adjust font size for smaller screens */
+    }
+
+    .footer-nav {
+        gap: 20px; /* Adjust gap for smaller screens */
+    }
+
+    .social-icons {
+        gap: 20px; /* Adjust gap for smaller screens */
+        font-size: 1.4rem; /* Adjust icon size */
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 10px; /* Adjust padding for small screens */
+    }
+
+    .footer h2 {
+        font-size: 1.8rem; /* Smaller heading */
+        margin-bottom: 15px; /* Adjust margin */
+    }
+
+    .footer-nav {
+        flex-direction: column; /* Stack footer links vertically */
+        gap: 15px; /* Adjust gap */
+    }
+
+    .social-icons {
+        flex-direction: row; /* Ensure icons are in a row */
+        gap: 15px; /* Adjust gap */
+        margin: 10px 0; /* Adjust margin */
+    }
+
+    footer p {
+        font-size: 0.8rem; /* Smaller font size */
+    }
+}
+
+@media (max-width: 375px) {
+    .skill-name {
+        font-size: 10px; /* Smaller skill name */
+    }
+
+    .progress-bar {
+        width: 30%; /* Adjust progress bar width */
+    }
+
+    .skill-bar span {
+        font-size: 10px; /* Smaller font size for skill bar */
+    }
+
+    .skills-box .skill-bar {
+        width: 100px; /* Adjust skill bar width */
+    }
+}
+</style>
+</head>
+<body>
+   <!-- Logo centered on mobile -->
+<div class="logo" id="logo" data-aos="zoom-out"data-aos-easing="ease-in-sine" data-aos-delay="100"style="color:#937af6;">JBimbs.</div>
+
+<div class="navbar" id="navbar" >
+  <a href="#home">
+    <i class="fas fa-home"></i>
+  </a>
+  <a href="#about">
+    <i class="fa fa-user-circle"></i>
+  </a>
+  <a href="#skills">
+    <i class="fa fa-heart" aria-hidden="true"></i>
+  </a>
+  <a href="#project">
+    <i class="fa fa-cubes" aria-hidden="true"></i>
+  </a>
+  <a href="#contact">
+    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+  </a>
+</div>
+     <section id="home">
+        <div class="main-container">
+            <div class="image"data-aos="zoom-out"
+     data-aos-easing="ease-in-sine" data-aos-delay="900">
+                <img src="img/Model-banner.png" alt="">
+            </div>
+            <div class="content">
+            <div class="typewriter" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="800" style="font-family: 'Sifonn', sans-serif;"> <span style="font-family: 'Sifonn', sans-serif; font-size:20px;" class="typewriter-text">Computer Science Student</span><label for=""></label></div>
+                <h1 data-aos="fade-right" data-aos-duration="1500" data-aos-delay="700" style="font-family: 'Sifonn', sans-serif;">Hey, I'm <span>JB Santillan</span></h1>
+                <p data-aos="flip-down" data-aos-duration="1500" data-aos-delay="1100">A blend of creativity and functionality, featuring a diverse range of projects. As a dedicated third-year student pursuing a Bachelor of Science in Computer Science, I have developed a strong foundation in programming, algorithms, and software development. My coursework has equipped me with skills in languages such as Python, Java, and C++, as well as experience in web development and database management."</p>
+                <div class="social-links">
+                    <a href="https://github.com/jBimbs"data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1200"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://t.me/Jbimbs"data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1300"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.facebook.com/p/jb-santillan-100088488845061/"data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1400"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/j_bimbs/profilecard/?igsh=MTZuaGtjdTZxbzRzOQ=="data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1500"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <div class="btn">
+                    <a href="#about"><button data-aos="zoom-out" data-aos-duration="1500" data-aos-delay="1700" >Know more!</button></a>
+                </div>
+            </div>
+        </div>
+     </section>
+     <section id="about" class="about-me">
+    <div class="two-column-layout">
+        <div class="left-column" data-aos="zoom-out"
+     data-aos-easing="ease-in-sine" data-aos-delay="900">
+            <div class="sidenav-container">
+                <ul class="sidenav">
+                <li><a href="#about-content" data-target="about-content"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1100"> About Me</a></li>
+<li><a href="#" data-target="education-content" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1100">Education</a></li>
+<li><a href="#" data-target="skill-content" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1100">Skills</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right-column" data-aos="fade-right" data-aos-duration="1500" data-aos-delay="800">
+            <div id="about-content" class="content-section active" >
+                <h1 style="color: #937af6 ;" data-aos="flip-down" data-aos-duration="1500" data-aos-delay="1100">About Me</h1>
+                <p class="intro" data-aos="flip-down" data-aos-duration="1500" data-aos-delay="1200">An enthusiastic and driven third-year Computer Science student, recognized for a solid work ethic and a true passion for technology. A dedicated and ambitious third-year Computer Science student, known for a strong work ethic and a genuine passion for technology.
+                </p>
+                <div class="details" data-aos="flip-down" data-aos-duration="1500" data-aos-delay="1300">
+                    <div class="row">
+                        <div class="label"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1400">Name</div>
+                        <div class="value"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1600">John Benjamin F. Santillan</div>
+                    </div>
+                    <div class="row">
+                        <div class="label"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1400">Phone</div>
+                        <div class="value"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1600">(+63) 954 468 2820</div>
+                    </div>
+                    <div class="row">
+                        <div class="label"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1400">Experience</div>
+                        <div class="value"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1600">3 years</div>
+                    </div>
+                    <div class="row">
+                        <div class="label"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1400">Nationality</div>
+                        <div class="value"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1600">Filipino</div>
+                    </div>
+                    <div class="row">
+                        <div class="label"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1400">Email</div>
+                        <div class="value"data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="1600">santillanjb033@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+
+        <div id="education-content" class="content-section">
+          <h1 style="color: #937af6 ;">My Education</h1>
+          <p class="intro">
+          I want to use technology to solve real problems. I've learned software engineering and web development skills to help me work well in teams and busy environments.          </p>
+          <div class="education-grid">
+            <div class="education-card">
+              <h3>2007–2013</h3>
+              <p><strong>Elementary</strong></p>
+              <p>Almanza Elementary School</p>
+            </div>
+            <div class="education-card">
+              <h3>2014–2018</h3>
+              <p><strong>High School</strong></p>
+              <p>Las Pinas National High School (Almanza)</p>
+            </div>
+            <div class="education-card">
+              <h3>2018–2020</h3>
+              <p><strong>ICT(Programming)</strong></p>
+              <p>Informatics College Northgate Alabang</p>
+            </div>
+            <div class="education-card">
+              <h3>2022–Present</h3>
+              <p><strong>Computer Science</strong></p>
+              <p>Cavite State University – Bacoor Campus</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="skill-content" class="content-section">
+    <h1>Technical Proficiency</h1>
+    <div class="skills-layout">
+        <!-- Left Side Navigation Tabs -->
+        <div class="skillnav">
+    <div class="nav-item active" data-target="frontend">
+        <img src="img/frontend.png" alt="Frontend" class="nav-icon"> Frontend
+    </div>
+    <div class="nav-item" data-target="backend">
+        <img src="img/backend.png" alt="Backend" class="nav-icon"> Backend
+    </div>
+    <div class="nav-item" data-target="tools">
+        <img src="img/tools.png" alt="Tools" class="nav-icon"> Tools
+    </div>
+    <div class="nav-item" data-target="soft-skills">
+        <img src="img/softskills.png" alt="Soft Skills" class="nav-icon"> Soft Skills
+    </div>
+</div>
+
+        <!-- Right Side Content Area -->
+          <!-- Right Side Content Area -->
+          <div class="skills-box">
+            <!-- Frontend Section -->
+            <div id="frontend" class="skills-section active">
+                <div class="frontend-skills">
+                    <div class="skill-item">
+                        <img src="img/html.png" alt="HTML" class="skill-image">
+                        <h3>HTML</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/css.png" alt="CSS" class="skill-image">
+                        <h3>CSS</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/17.png" alt="JavaScript" class="skill-image">
+                        <h3>JavaScript</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/react.png" alt="React" class="skill-image">
+                        <h3>React</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Section -->
+            <div id="backend" class="skills-section">
+                <div class="frontend-skills">
+                    <div class="skill-item">
+                        <img src="img/node.js.png" alt="Node.js" class="skill-image">
+                        <h3>Node.js</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/express.png" alt="Express" class="skill-image">
+                        <h3>Express</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/18.png" alt="MongoDB" class="skill-image">
+                        <h3>MongoDB</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools Section -->
+            <div id="tools" class="skills-section">
+                <div class="skill-bar">
+                    <span class="skill-name">Git & GitHub</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 85%;"></div>
+                    </div>
+                    <span class="percentage">85%</span>
+                </div>
+                <div class="skill-bar">
+                    <span class="skill-name">Visual Studio Code</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                    <span class="percentage">75%</span>
+                </div>
+                <div class="skill-bar">
+                    <span class="skill-name">Webpack</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                    <span class="percentage">60%</span>
+                </div>
+            </div>
+
+            <!-- Soft Skills Section -->
+                  <div id="soft-skills" class="skills-section">
+                  <div class="frontend-skills">
+                    <div class="skill-item">
+                        <img src="img/communication.png" alt="Communication" class="skill-image">
+                        <h3>Communication</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/teamwork.png" alt="Teamwork" class="skill-image">
+                        <h3>Teamwork</h3>
+                    </div>
+                    <div class="skill-item">
+                        <img src="img/leadership.png" alt="Leadership" class="skill-image">
+                        <h3>Leadership</h3>
+                    </div>
+                </div>
+                  </div>
+                </div>
+              </div>
+           </div>
+        </div>
+    </div>
+</section>
+
+
+    <section id="skills" style="background-color: #1a1a2e;">
+    <h2 data-aos="fade-up" data-aos-duration="1500" data-aos-delay="100">What I Do?</h2>
+    <p></p>
+    <div class="skills-container">
+        <div class="skill-box" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/webdev.png" alt="">
+            <h3>Web Developing</h3>
+        </div>
+        <div class="skill-box" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/webdesign.png" alt="">
+            <h3>Web Design</h3>
+        </div>
+        <div class="skill-box" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/contentcreator.png" alt="">
+            <h3>Content Creator</h3>
+        </div>
+        <div class="skill-box" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/graphicdesign.png" alt="">
+            <h3>Graphic Design</h3>
+        </div>
+        <div class="skill-box" data-aos="zoom-out" data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/facebookmarketing.png" alt="">
+            <h3>Facebook Marketing</h3>
+        </div>
+        <div class="skill-box"data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/businessplanner.png" alt="">
+            <h3>Business Planner</h3>
+        </div>
+        <div class="skill-box" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/contentstrategist.png" alt="">
+            <h3>Content Strategist</h3>
+        </div>
+        <div class="skill-box" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="400">
+            <img src="img/brand.png" alt="">
+            <h3>Business Owner & Barista</h3>
+        </div>
+    </div>
+    </div>
+</section>
+
+     <!-- Project Collection section -->
+     <section id="project" style="background-color: #1a1a2e;">
+        <h2 class="heading" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="100">Projects</h2>
+        <p class="heading"data-aos="fade-down" data-aos-duration="1500" data-aos-delay="200">Collection of Santillan's Projects</p>
+        <div class="projects-box">
+            <div class="project-card" data-aos="zoom-out"        data-aos-easing="ease-in-sine" data-aos-delay="300">
+                    <img src="img/CVSU.png" alt="Cavite State University Project">
+                    <div class="des">
+                        <h5>Cavite State University</h5>
+                        <p>Cavite State University Bacoor is a satellite campus in Bacoor City, Philippines, offering undergraduate programs in various fields.</p>
+                        <a href="https://cvsu-web.netlify.app/"class="project-link"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                    </div>
+                </a>
+            </div>
+
+            <div class="project-card" data-aos="zoom-out"        data-aos-easing="ease-in-sine" data-aos-delay="400">
+                    <img src="img/checkList.jpg" alt="Cavite State University CheckList Project">
+                    <div class="des">
+                        <h5>Cavite State University CheckList</h5>
+                        <p>A project that allows students to track their academic requirements efficiently.</p>
+                        <a href="https://github.com/jBimbs/Collection.git"class="project-link"><i class="fa fa-link" aria-hidden="true"></i></a>
+                    </div>
+                </a>
+            </div>
+
+            <div class="project-card" data-aos="zoom-out"        data-aos-easing="ease-in-sine" data-aos-delay="500">
+                    <img src="img/QuinqueWare.png" alt="QuinqueWare Project">
+                    <div class="des">
+                        <h5>QuinqueWare</h5>
+                        <p>This project showcases advanced features and innovative solutions in software development.</p>
+                        <a href="https://quinqueware.netlify.app/"class="project-link"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                    </div>
+                </a>
+            </div>
+
+            <div class="project-card" data-aos="zoom-out"        data-aos-easing="ease-in-sine" data-aos-delay="600">
+                    <img src="img/batangkalye.jpg" alt="Batang Kalye Project">
+                    <div class="des">
+                        <h5>HoopX X Batang Kalye</h5>
+                        <p>This project focuses on enhancing the e-commerce experience for users.</p>
+                        <a href="https://github.com/jBimbs/Collection.git"class="project-link"><i class="fa fa-link" aria-hidden="true"></i></a>
+                    </div>
+                </a>
+            </div>
+
+            <div class="project-card" data-aos="zoom-out"  data-aos-easing="ease-in-sine" data-aos-delay="7  00">
+                    <img src="img/adminsystem.jpg" alt="Batang Kalye Admin Project">
+                    <div class="des">
+                        <h5>HoopX X Batang Kalye Admin System</h5>
+                        <p>An admin system designed to streamline management tasks for an e-commerce platform.</p>
+                        <a href="https://github.com/jBimbs/Collection.git"class="project-link"><i class="fa fa-link" aria-hidden="true"></i></a>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+<!-- Modal -->
+<div id="projectModal" class="modal">
+    <span id="closeModal" class="close">&times;</span>
+    <div id="modalSlider" class="slider-container">
+        <!-- Project images will be inserted here dynamically -->
+    </div>
+    <!-- Add Prev and Next buttons -->
+    <button class="prev" id="modalPrev">&#10094;</button>
+    <button class="next" id="modalNext">&#10095;</button>
+</div>
+
+
+    <!--Contact Section-->
+    <div id="contact"class="contact-us">
+    <div class="title" data-aos="fade-up"        data-aos-easing="ease-in-sine" data-aos-delay="300">
+      <h1>Contact Us</h1>
+    </div>
+    <div class="box">
+      <div class="contact form"data-aos="flip-right"        data-aos-easing="ease-in-sine" data-aos-delay="300">  
+
+      <form action="https://formspree.io/f/xgvekddp" method="POST">
+        <h3 style="color: #7f5af0;font-size:30px;" data-aos="fade-right"        data-aos-easing="ease-in-sine" data-aos-delay="300">We Would Like To Hear From You!</h3>
+    <div class="formBox">
+        <div class="row50">
+            <div class="inputBox">
+                <input type="text" name="name" required>
+                <label data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="500">Name</label>
+            </div>
+            <div class="inputBox">
+                <input type="email" name="email" required>
+                <label data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="500">Email</label>
+            </div>
+        </div>
+        <div class="row100">
+            <div class="inputBox">
+                <textarea name="message" rows="6" required></textarea>
+                <label data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-delay="500">Message</label>
+            </div>
+        </div>
+        <div class="btn">
+            <button type="submit" style="color:white;" data-aos="fade-in" data-aos-easing="ease-in-sine" data-aos-delay="700">Submit</button>
+        </div>
+    </div>
+</form>
+
+      </div>
+      <div class="contact info" style="background: #262626;"data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-delay="700">
+        <div class="infoBox">
+          <div>
+            <i class="fas fa-phone-alt" style="color:#937af6;"></i>
+            <p>+63 (954) 468-2820</p>
+          </div>
+          <div>
+            <i class="fas fa-map-marker-alt" style="color:#937af6;"></i>
+            <p>Las Pinas City, Philippines</p>
+          </div>
+          <div>
+            <i class="fab fa-google" style="color:#937af6;"></i>
+            <p>santillanjb033@gmail.com</p>
+          </div>
+        </div>
+      </div>
+      <div class="contact map" style="background: #262626;" data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-delay="700">
+      <iframe  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61820.56475237634!2d120.99510719999999!3d14.43953335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ce0835972b6f%3A0xff33295d281774b!2sLas%20Pi%C3%B1as%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1731319026512!5m2!1sen!2sph" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>      </div>
+    </div>
+  </div>
+  <!-- Footer Section -->
+  <footer class="footer">
+        <h2>JBimbs<span class="dot">.</span></h2>
+        
+        
+
+        <div class="social-icons">
+            <a href="https://www.instagram.com/j_bimbs/profilecard/?igsh=MTZuaGtjdTZxbzRzOQ=="><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/p/jb-santillan-100088488845061/"><i class="fab fa-facebook"></i></a>
+            <a href="https://github.com/jBimbs"><i class="fab fa-github"></i></a>
+            <a href="https://t.me/Jbimbs"><i class="fab fa-telegram"></i></a>
+        </div>
+        
+        <p class="copyright">
+            &copy; JBimbs - All rights reserved
+        </p>
+    </footer>
+     <script src="script.js"></script>
+     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+     <script>
+        AOS.init({offset:0});
+    </script>
+    
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebarLinks = document.querySelectorAll('.sidenav a');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    // Initially hide all content sections
+    contentSections.forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Set the About Me section to be active by default
+    document.getElementById('about-content').classList.add('active');
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const targetId = this.getAttribute('data-target');
+
+            // Hide all content sections
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the target content section
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        });
+    });
+});
+</script>
+<script>
+    document.querySelectorAll('.nav-item').forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Remove active class from all tabs
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        this.classList.add('active');
+
+        // Hide all sections
+        document.querySelectorAll('.skills-section').forEach(section => section.classList.remove('active'));
+
+        // Show the targeted section
+        const targetId = this.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+
+    // Trigger the first tab by default on page load
+    document.querySelector('.nav-item.active').click();
+  </script>
+</body>
+</html>
